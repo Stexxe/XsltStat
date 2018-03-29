@@ -5,6 +5,7 @@ import re
 
 class Parser:
     NS = {'xsl': 'http://www.w3.org/1999/XSL/Transform'}
+    EXCLUDED_PREFIX = ['xs']
 
     @staticmethod
     def parse(filepath):
@@ -19,7 +20,7 @@ class Parser:
             data = file.read()
 
             funcs = Parser._parse_funcs(data)
-            [result.add_func(x) for x in funcs if x is not None]
+            [result.add_func(x) for x in funcs if x is not None and x.name.split(':')[0] not in Parser.EXCLUDED_PREFIX]
 
         return result
 

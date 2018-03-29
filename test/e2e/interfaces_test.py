@@ -45,7 +45,6 @@ class InterfacesTest(StatCase):
                 }
             },
             'functions': {
-                'xs:dayTimeDuration': [Type.STRING],
                 'knfunc:create-tws-member': [None],
                 'eimf:set-local': [Type.UNKNOWN, Type.STRING, Type.STRING],
                 'eimf:set-global': [Type.STRING, Type.STRING]

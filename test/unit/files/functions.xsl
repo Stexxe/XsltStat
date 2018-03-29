@@ -16,5 +16,7 @@
 
         <xsl:value-of select="ex:complex(1, substring('some string', 1, 10), 'text')"/>
 
+        <xsl:value-of select="xs:number('123')"/>
+
     </xsl:template>
 </xsl:stylesheet>
