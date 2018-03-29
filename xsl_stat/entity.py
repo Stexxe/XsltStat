@@ -17,8 +17,9 @@ class Type(Enum):
         return conv[self]
 
 
-class Result:
+class Interface:
     def __init__(self):
+        self.name, self.region = None, None
         self.templates = []
         self.funcs = []
 

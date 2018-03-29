@@ -11,7 +11,7 @@ class Parser:
     def parse(filepath):
         tree = Et.parse(filepath)
 
-        result = Result()
+        result = Interface()
         for node in tree.findall('.//xsl:call-template', Parser.NS):
             template = Parser._parse_template(node)
             result.add_template(template)

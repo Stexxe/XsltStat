@@ -29,15 +29,15 @@ class StatCase(unittest.TestCase):
         :return:
         '''
 
-        result = Parser.parse(filepath)
+        interface = Parser.parse(filepath)
 
         if 'templates' in expect:
-            self.foreach_expected_entity(self.check_template, expect['templates'], result)
-            self.check_amount(expect['templates'], result.templates)
+            self.foreach_expected_entity(self.check_template, expect['templates'], interface)
+            self.check_amount(expect['templates'], interface.templates)
 
         if 'functions' in expect:
-            self.foreach_expected_entity(self.check_func, expect['functions'], result)
-            self.check_amount(expect['functions'], result.funcs)
+            self.foreach_expected_entity(self.check_func, expect['functions'], interface)
+            self.check_amount(expect['functions'], interface.funcs)
 
     def check_amount(self, expect, actual):
         names = list(map(lambda x: x.name, actual))
