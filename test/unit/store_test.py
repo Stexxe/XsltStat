@@ -12,7 +12,7 @@ class MyTestCase(unittest.TestCase):
 
         self.client = MongoClient()
         self.db = self.client[dbname]
-        self.engine = StoreEngine(self.client, dbname)
+        self.engine = StoreEngine(self.db)
 
         self.inter = Interface()
 

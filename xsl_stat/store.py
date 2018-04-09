@@ -1,8 +1,7 @@
 class StoreEngine:
 
-    def __init__(self, client, storage):
-        self.client = client
-        self.db = client[storage]
+    def __init__(self, db):
+        self.db = db
 
     def store(self, inter):
         data = {
