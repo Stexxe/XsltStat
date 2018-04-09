@@ -22,43 +22,65 @@ class MyTestCase(unittest.TestCase):
             coll.remove()
 
     @attr('slow')
-    def test_storing_interface_with_name(self):
+    def test_storing_interface_base_info(self):
         self.inter.name = 'Test'
-
-        self.engine.store(self.inter)
-
-        stored_inter = self.db['interfaces'].find_one()
-        self.assertEqual('Test', stored_inter['name'])
-
-    @attr('slow')
-    def test_store_interface_with_region(self):
         self.inter.region = 'AMER'
 
         self.engine.store(self.inter)
-
         stored_inter = self.db['interfaces'].find_one()
-        stored_region = self.db['regions'].find_one()
 
-        self.assertEqual('AMER', stored_region['name'])
-        self.assertEqual(stored_region['_id'], stored_inter['region'])
+        self.assertEqual('Test', stored_inter['name'])
+        self.assertEqual('AMER', stored_inter['region'])
 
     @attr('slow')
-    def test_store_interface_with_existed_region(self):
-        inter1 = Interface()
-        inter1.name = '1'
-        inter1.region = 'AMER'
+    def test_storing_templates(self):
+        param = Param()
+        param.name = 'param1'
+        param.type = Type.STRING
 
-        inter2 = Interface()
-        inter2.name = '2'
-        inter2.region = 'AMER'
+        template = Template()
+        template.name = 'conv'
+        template.add_param(param)
+        self.inter.add_template(template)
+
+        self.engine.store(self.inter)
+        stored_templates = self.db['interfaces'].find_one()['templates']
+
+        self.assertEqual('conv', stored_templates[0]['name'])
+        self.assertEqual('String', stored_templates[0]['params'][0]['type'])
+        self.assertEqual('param1', stored_templates[0]['params'][0]['name'])
+
+    @attr('slow')
+    def test_storing_functions(self):
+        param = Param()
+        param.pos = 0
+        param.type = Type.NUMBER
+
+        func = Func()
+        func.name = 'example:func'
+        func.add_param(param)
+        self.inter.add_func(func)
+
+        self.engine.store(self.inter)
+        stored_funcs = self.db['interfaces'].find_one()['functions']
+
+        self.assertEqual('example:func', stored_funcs[0]['name'])
+        self.assertEqual('Number', stored_funcs[0]['params'][0]['type'])
+        self.assertEqual(1, stored_funcs[0]['params'][0]['position'])
+
+    @attr('slow')
+    def test_storing_existed_interface(self):
+        inter1 = Interface()
+        inter1.name = 'Test'
+        inter1.region = 'IMEA'
 
         self.engine.store(inter1)
+
+        inter2 = Interface()
+        inter2.name = 'Test'
+        inter2.region = 'AMER'
+
         self.engine.store(inter2)
 
-        stored_region = self.db['regions'].find_one()
-
-        stored_inter1 = self.db['interfaces'].find_one({'name': '1'})
-        stored_inter2 = self.db['interfaces'].find_one({'name': '2'})
-
-        self.assertEqual(stored_region['_id'], stored_inter1['region'])
-        self.assertEqual(stored_region['_id'], stored_inter2['region'])
+        self.assertEqual(1, self.db['interfaces'].count())
+        self.assertEqual('AMER', self.db['interfaces'].find_one()['region'])

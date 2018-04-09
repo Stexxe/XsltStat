@@ -5,17 +5,40 @@ class StoreEngine:
         self.db = client[storage]
 
     def store(self, inter):
-        region_id = None
-        if inter.region is not None:
-            region_id = self._fetch_region_id(inter.region)
-            if region_id is None:
-                region_id = self.db['regions'].insert_one({'name': inter.region}).inserted_id
+        data = {
+            'name': inter.name,
+            'region': inter.region,
+            'templates': self._convert_entities(inter.templates),
+            'functions': self._convert_entities(inter.funcs),
+        }
+        self.db['interfaces'].update({'name': inter.name}, data, True)
 
-        self.db['interfaces'].insert_one({'name': inter.name, 'region': region_id})
+    def _convert_entities(self, entities):
+        result = []
 
-    def _fetch_region_id(self, name):
-        region = self.db['regions'].find_one({'name': name})
-        return region['_id'] if region is not None else None
+        for ent in entities:
+            data = {
+                'name': ent.name,
+                'params': self._convert_params(ent.params)
+            }
 
+            result.append(data)
 
+        return result
+
+    def _convert_params(self, params):
+        result = []
+
+        for p in params:
+            position = p.pos + 1 if p.pos is not None else None
+
+            data = {
+                'name': p.name,
+                'position': position,
+                'type': str(p.type)
+            }
+
+            result.append(data)
+
+        return result
 
