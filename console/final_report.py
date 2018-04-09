@@ -40,11 +40,10 @@ def _get_result(interfaces, key):
 
 client = MongoClient()
 db = client['stat']
-collected_interfaces = db['interfaces'].find({})
 
 result = {
-    'templates': _get_result(collected_interfaces, 'templates'),
-    'functions': _get_result(collected_interfaces, 'functions'),
+    'functions': _get_result(db['interfaces'].find({}), 'functions'),
+    'templates': _get_result(db['interfaces'].find({}), 'templates'),
 }
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -56,6 +55,3 @@ output = template.render(data=result)
 
 with io.open(os.path.join(current_dir, 'report.html'), 'w', encoding='utf8') as file:
     file.write(output)
-
-
-

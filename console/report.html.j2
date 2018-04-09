@@ -3,8 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <style>
+        .name {color: green}
+        .count {color: red;}
+    </style>
 </head>
 <body>
+    <h2>Templates</h2>
+    {% for region, region_data in data['templates'].items() %}
+        <h3>{{ region }}</h3>
+        <ul>
+            {% for name, data in region_data.items() %}
+                <li>
+                    <span class="name">{{ name }}</span> -> <span class="count">{{ data['count'] }}</span>
+                    ({% for interface in data['interfaces'][:10] %} {{ interface }},  {% endfor %})
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
 
+    <h2>Functions</h2>
+    {% for region, region_data in data['functions'].items() %}
+        <h3>{{ region }}</h3>
+        <ul>
+            {% for name, data in region_data.items() %}
+                <li>
+                    <span class="name">{{ name }}</span> -> <span class="count">{{ data['count'] }}</span>
+                    ({% for interface in data['interfaces'][:10] %} {{ interface }},  {% endfor %})
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
 </body>
 </html>
