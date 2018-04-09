@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as Et
 from entity import *
 import re
+import io
 
 
 class Parser:
@@ -16,7 +17,7 @@ class Parser:
             template = Parser._parse_template(node)
             result.add_template(template)
 
-        with open(filepath, 'r') as file:
+        with io.open(filepath, 'r', encoding='utf8') as file:
             data = file.read()
 
             funcs = Parser._parse_funcs(data)
