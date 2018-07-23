@@ -1,1 +1,1 @@
-# Collecting statistics of usage named templates and functions inside XSLT-files
+## Сборщик статистики частоты использования именных шаблонов и функций в XSLT-файлах
